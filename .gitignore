@@ -1,0 +1,12 @@
+# Ignorar directorio venv
+venv/
+img/
+garbage/
+
+# Ignorar archivos generados por el entorno virtual
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Ignorar archivo de requerimientos del entorno virtual
