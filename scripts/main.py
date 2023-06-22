@@ -4,7 +4,8 @@ import json
 import warnings
 warnings.filterwarnings('ignore')
 import datetime
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+from fastapi.responses import JSONResponse
 
 meses_1 = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 meses_2 = [mes.upper() for mes in meses_1]
@@ -19,32 +20,47 @@ cast = pd.read_csv('../final_data/final_cast.csv')
 
 app = FastAPI()
 
+@app.get('/')
+def home():
+    return {'mensaje':'Movie Recommendation API'}
+
 @app.get('/cantidad_filmaciones_mes/{mes}')
 def cantidad_filmaciones_mes(mes:str):
     '''Se ingresa el mes y la funcion retorna la cantidad de peliculas que se estrenaron ese mes historicamente'''
-    mes_index = meses.index(mes)
-    mes_numero = meses_numeros[mes_index]
-    
-    cantidad_xmes = float(data['movie_id'].loc[data.release_month == mes_numero].count())
-    return {'mes':{mes},'cantidad_fimaciones_mes':{cantidad_xmes}}
+    if mes not in meses:
+        return {'mensaje':'Ingresar un mes en idioma Español'}
+    else:
+        mes_index = meses.index(mes)
+        mes_numero = meses_numeros[mes_index]
+        
+        cantidad_xmes = float(data['movie_id'].loc[data.release_month == mes_numero].count())
+        data_json = {'mes':mes,'cantidad_fimaciones_mes':cantidad_xmes}
 
-@app.get('/cantidad_filmaciones_dia{dia}')
+        json_str = json.dumps(data_json, indent=4, default=str)
+        return Response(content=json_str, media_type='application/json')
+
+@app.get('/cantidad_filmaciones_dia/{dia}')
 def cantidad_filmaciones_dia(dia:str):
     '''Se ingresa el dia y la funcion retorna la cantidad de peliculas que se estrebaron ese dia historicamente'''
     dia = int(dia)
     dias = [dia for dia in range(1,32)]
     if dia not in dias:
-        return {'dia':dia, 'cantidad_filmaciones_dia':0}
+        data_json = {'dia':dia, 'cantidad_filmaciones_dia':0}
+    
     else:
         cantidad_xdia = data.movie_id.loc[data.release_day == dia].count()
-        return {'dia':dia, 'cantidad_filmaciones_dia':cantidad_xdia}
+        data_json = {'dia':dia, 'cantidad_filmaciones_dia':int(cantidad_xdia)}
+
+    json_str = json.dumps(data_json, indent=4, default=str)
+    return Response(content=json_str, media_type='application/json')
+                        
 
 @app.get('/score_titulo/{titulo}')
 def score_titulo(titulo:str):
     '''Se ingresa el título de una filmación esperando como respuesta el título, el año de estreno y el score'''
     filmaciones = list(data.title.unique())
     if titulo not in filmaciones:
-        return {'titulo':'Movie not found'}
+        data_json = {'titulo':'No se encuentra la pelicula en la base de datos'}
     else:
         movie_index = data.loc[data.title == titulo].index
         movie_year = data.release_year.iloc[movie_index]
@@ -60,9 +76,12 @@ def score_titulo(titulo:str):
         else:
             movie_score = float(movie_score)
 
-        return {'titulo':titulo,
-                'anio':movie_year,
-                'popularity':movie_score}
+        data_json = {'titulo':titulo,
+                    'anio':movie_year,
+                    'popularity':movie_score}
+
+    json_str = json.dumps(data_json, indent=4, default=str)
+    return Response(content=json_str, media_type='application/json')
 
 @app.get('/votos_titulo/{titulo}')
 def votos_titulo(titulo:str):
@@ -71,7 +90,7 @@ def votos_titulo(titulo:str):
     caso contrario, debemos contar con un mensaje avisando que no cumple esta condición y que por ende, no se devuelve ningun valor.'''
     filmaciones = list(data.title.unique())
     if titulo not in filmaciones:
-        return {'titulo': 'Movie not found'}
+        data_json = {'titulo': 'Movie not found'}
     else:
         movie_index = data.loc[data.title == titulo].index
         movie_year = data.release_year.iloc[movie_index].item() if pd.notna(data.release_year.iloc[movie_index]).any() else 'Desconocido'
@@ -83,13 +102,16 @@ def votos_titulo(titulo:str):
             movie_vote_average = 'Insuficientes votos'
             mensaje = 'Este titulo tiene menos de 2000 votos'
 
-        return {
+        data_json = {
             'titulo': titulo,
             'anio': int(movie_year) if isinstance(movie_year, float) else movie_year,
             'votos': int(movie_vote_count) if isinstance(movie_vote_count, float) else movie_vote_count,
             'valoracion_promedio': float(movie_vote_average) if isinstance(movie_vote_average, float) else movie_vote_average,
-            'mensaje': mensaje if 'mensaje' in locals() else None
-        }
+            'mensaje': mensaje if 'mensaje' in locals() else None}
+        
+    json_str = json.dumps(data_json, indent=4, default=str)
+    return Response(content=json_str, media_type='application/json')
+    
     
 
 @app.get('/get_actor/{nombre_actor}')
@@ -99,16 +121,19 @@ def get_actor(nombre_actor:str):
     all_actors = list(cast.name.unique())
 
     if nombre_actor not in all_actors:
-        return {'mensaje':'Actor not found'}
+        data_json = {'mensaje':'Actor not found'}
     else:
         cantidad_titulos_actor = int(data.movie_id.loc[data.actors.fillna('').str.contains(nombre_actor)].count())
         retorno_actor = float(data['return'].loc[data.actors.fillna('').str.contains(nombre_actor)].sum())
         promedio_x_pelicula = retorno_actor / cantidad_titulos_actor
 
-        return {'actor':nombre_actor,
+        data_json = {'actor':nombre_actor,
                 'cantidad_filmaciones':cantidad_titulos_actor,
                 'retorno_total_del_actor':retorno_actor,
                 'promedio_de_retorno_por_pelicula':promedio_x_pelicula}
+    
+    json_str = json.dumps(data_json, indent=4, default=str)
+    return Response(content=json_str, media_type='application/json')
 
 @app.get('/get_director/{nombre_director}')
 def get_director(nombre_director:str):
@@ -116,7 +141,7 @@ def get_director(nombre_director:str):
     Además, deberá devolver el nombre de cada película con la fecha de lanzamiento, retorno individual, costo y ganancia de la misma.'''
     
     if nombre_director not in data.director.unique():
-        return {'mensaje':'Director no encontrado en la base de datos'}
+        data_json = {'mensaje':'Director no encontrado en la base de datos'}
     else:
         retorno_total_director = data['return'].loc[data.director == nombre_director].sum()
         movies_indexes = data.title.loc[data.director == nombre_director].index
@@ -134,9 +159,13 @@ def get_director(nombre_director:str):
                     'budget':movie_budget,
                     'revenue':movie_revenue}
             movies_data.append(info)
-        return {'director':nombre_director,
+            
+        data_json = {'director':nombre_director,
                 'retorno_total_director':retorno_total_director,
                 'peliculas':movies_data}
+    
+    json_str = json.dumps(data_json, indent=4, default=str)
+    return Response(content=json_str, media_type='application/json')
 
 # ML
 @app.get('/recomendacion/{titulo}')
