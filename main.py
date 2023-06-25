@@ -15,8 +15,8 @@ meses = meses_1 + meses_2 + meses_3
 meses_numeros = [numero for numero in range(1,13)]
 meses_numeros = meses_numeros * 3
 
-data = pd.read_csv('../final_data/combined_data.csv',sep=',')
-cast = pd.read_csv('../final_data/final_cast.csv')
+data = pd.read_csv('final_data/combined_data.csv',sep=',')
+cast = pd.read_csv('final_data/final_cast.csv')
 
 movies = data.copy()
 
