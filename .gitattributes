@@ -1,4 +1,0 @@
-datasets/credits.csv filter=lfs diff=lfs merge=lfs -text
-preprocessing_data/cast.csv filter=lfs diff=lfs merge=lfs -text
-preprocessing_data/crew.csv filter=lfs diff=lfs merge=lfs -text
-*.csv filter=lfs diff=lfs merge=lfs -text
