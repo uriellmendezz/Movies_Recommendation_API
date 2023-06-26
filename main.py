@@ -6,21 +6,19 @@ warnings.filterwarnings('ignore')
 import datetime
 from fastapi import FastAPI, Response
 from fastapi.responses import JSONResponse
+app = FastAPI()
 
-meses_1 = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-meses_2 = [mes.upper() for mes in meses_1]
-meses_3 = [mes.capitalize() for mes in meses_1]
-meses = meses_1 + meses_2 + meses_3
+meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+dias_es = ['lunes', 'martes', 'miercoles', 'jueves','viernes','sabado','domingo',"lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+dias_en = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-meses_numeros = [numero for numero in range(1,13)]
-meses_numeros = meses_numeros * 3
-
+# Datasets
 data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
-
 movies = data[['title','genres','director']]
 
-app = FastAPI()
+data.release_date = data.release_date.apply(lambda x: pd.to_datetime(x).date() if '-' in x else x)
+data['release_weekday']= data.release_date.apply(lambda x: x.strftime('%A') if type(x) == datetime.date else np.nan)
 
 @app.get('/')
 def home():
@@ -29,11 +27,10 @@ def home():
 @app.get('/cantidad_filmaciones_mes/{mes}')
 def cantidad_filmaciones_mes(mes:str):
     '''Se ingresa el mes y la funcion retorna la cantidad de peliculas que se estrenaron ese mes historicamente'''
-    if mes not in meses:
+    if mes.lower() not in meses:
         return {'mensaje':'Ingresar un mes en idioma Español'}
     else:
-        mes_index = meses.index(mes)
-        mes_numero = meses_numeros[mes_index]
+        mes_numero = meses.index(mes)
         
         cantidad_xmes = float(data['movie_id'].loc[data.release_month == mes_numero].count())
         data_json = {'mes':mes,'cantidad_fimaciones_mes':cantidad_xmes}
@@ -44,14 +41,14 @@ def cantidad_filmaciones_mes(mes:str):
 @app.get('/cantidad_filmaciones_dia/{dia}')
 def cantidad_filmaciones_dia(dia:str):
     '''Se ingresa el dia y la funcion retorna la cantidad de peliculas que se estrebaron ese dia historicamente'''
-    dia = int(dia)
-    dias = [dia for dia in range(1,32)]
-    if dia not in dias:
-        data_json = {'dia':dia, 'cantidad_filmaciones_dia':0}
-    
+    dia = dia.lower()
+    if dia not in dias_es:
+        data_json = {'mensaje':'Se requiere de un dia de la semana en idioma Espaniol (Spanish)'}
+ 
     else:
-        cantidad_xdia = data.movie_id.loc[data.release_day == dia].count()
-        data_json = {'dia':dia, 'cantidad_filmaciones_dia':int(cantidad_xdia)}
+        dia_index = dias_es.index(dia)
+        cantidad_xdia = data.movie_id.loc[data.release_weekday == dias_en[dia_index]].count()
+        data_json = {'dia':dia.capitalize(), 'cantidad_filmaciones_dia':int(cantidad_xdia)}
 
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
