@@ -18,7 +18,7 @@ meses_numeros = meses_numeros * 3
 data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
 
-movies = data.copy()
+movies = data[['title','genres','director']]
 
 app = FastAPI()
 
@@ -114,7 +114,6 @@ def votos_titulo(titulo:str):
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
     
-    
 
 @app.get('/get_actor/{nombre_actor}')
 def get_actor(nombre_actor:str):
@@ -175,8 +174,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-movies = movies[['title','genres','director']]
-movies.genres = movies.genres.str.replace('|',' ')
+movies['genres'] = movies['genres'].str.replace('|',' ')
 movies['joined_data'] = movies[['title','genres','director']].astype(str).apply(' '.join, axis=1)
 
 vectorizer = TfidfVectorizer(stop_words='english') # Elimino las palabras mas comunes del ingles
