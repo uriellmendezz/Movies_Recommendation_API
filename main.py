@@ -29,11 +29,11 @@ def home():
 @app.get('/cantidad_filmaciones_mes/{mes}')
 def cantidad_filmaciones_mes(mes:str):
     '''Se ingresa el mes y la funcion retorna la cantidad de peliculas que se estrenaron ese mes historicamente'''
-    if mes.lower() not in meses:
+    mes = mes.lower()
+    if mes not in meses:
         return {'mensaje':'Ingresar un mes en idioma Español'}
     else:
         mes_numero = meses.index(mes)
-        
         cantidad_xmes = float(data['movie_id'].loc[data.release_month == mes_numero].count())
         data_json = {'mes':mes,'cantidad_fimaciones_mes':cantidad_xmes}
 
@@ -70,12 +70,12 @@ def score_titulo(titulo:str):
         if pd.isna(movie_year).any():
             movie_year = 'Desconocido'
         else:
-            movie_year = int(movie_year)
+            movie_year = int(movie_year.iloc[0])
 
         if pd.isna(movie_score).any():
             movie_score = 'Desconocido'
         else:
-            movie_score = float(movie_score)
+            movie_score = float(movie_score.iloc[0])
 
         data_json = {'titulo':titulo,
                     'anio':movie_year,
@@ -94,9 +94,9 @@ def votos_titulo(titulo:str):
         data_json = {'titulo': 'Movie not found'}
     else:
         movie_index = data.loc[data.title == titulo].index
-        movie_year = data.release_year.iloc[movie_index].item() if pd.notna(data.release_year.iloc[movie_index]).any() else 'Desconocido'
-        movie_vote_count = data.vote_count.iloc[movie_index].item() if pd.notna(data.vote_count.iloc[movie_index]).any() else 'Desconocido'
-        movie_vote_average = data.vote_average.iloc[movie_index].item() if pd.notna(data.vote_average.iloc[movie_index]).any() else 'Desconocido'
+        movie_year = data.release_year.iloc[movie_index].tolist()[0] if pd.notna(data.release_year.iloc[movie_index]).any() else 'Desconocido'
+        movie_vote_count = data.vote_count.iloc[movie_index].tolist()[0] if pd.notna(data.vote_count.iloc[movie_index]).any() else 'Desconocido'
+        movie_vote_average = data.vote_average.iloc[movie_index].tolist()[0] if pd.notna(data.vote_average.iloc[movie_index]).any() else 'Desconocido'
 
         if pd.notna(movie_vote_count) and int(movie_vote_count) < 2000:
             movie_vote_count = 'Insuficientes votos'
