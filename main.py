@@ -15,7 +15,9 @@ dias_en = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "
 # Datasets
 data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
+
 movies = data[['title','genres','director']]
+movies = movies.dropna(subset='genres') # Elimino las peliculas que tienen vacio el campo de 'genres'
 
 data.release_date = data.release_date.apply(lambda x: pd.to_datetime(x).date() if '-' in x else x)
 data['release_weekday']= data.release_date.apply(lambda x: x.strftime('%A') if type(x) == datetime.date else np.nan)
@@ -183,28 +185,64 @@ def recomendacion(title):
     if title not in movies.title.unique():
         data_json = {'mensaje':'Pelicula no encontrada'}
     else:
+        # Obtengo los géneros de la pelicula
         movie_genres = movies['genres'].loc[movies['title'] == title]
+        #movie_genres = movie_genres.values[pd.isna(movie_genres.values) == False].item()
+        movie_genres = sorted(movie_genres, key= lambda x: len(x), reverse=True) # Ordenar los géneros en función del len()
+
 
         # Separo los generos en una lista
-        genres = [v.split(' ') for v in movie_genres if isinstance(v,str)]
+        #genres = [v.split(' ') for v in movie_genres if isinstance(v,str)]
 
         # Filtro el dataframe con las peliculas que tengan los mismos géneros que la pelicula de interes
         # y con las peliculas que tengan en su titulo el nombre de la pelicula de interes
-        similar_movies = movies.loc[movies.genres.fillna(' ').str.contains(movie_genres.values[0]) | movies.title.str.contains(title)].reset_index(drop=True)
-    
+        similar_movies = movies.loc[(movies.genres.fillna(' ').str.contains(movie_genres[0])) | (movies.title.str.contains(title))].reset_index(drop=True)
+        max_len = 3500
+        if len(similar_movies) > max_len:
+            similar_movies = similar_movies.sort_values(by='popularity', ascending=False).reset_index(drop=True)[:max_len]
+
+        # Obtengo el indice en el dataframe filtrado de la pelicula de interes
+        movie_index = similar_movies.loc[similar_movies['title'] == title].index
+        if len(movie_index) == 0:
+            similar_movies = similar_movies.append(movies.loc[movies.title == title]).reset_index(drop=True)
+            movie_index = similar_movies.loc[similar_movies['title'] == title].index
+
         # Vectorizo los datos
         data_matrix = vectorizer.fit_transform(similar_movies.joined_data)
         # Genero la matriz de puntuación de similitud entre las peliculas
         similarity_matrix = cosine_similarity(data_matrix,data_matrix)
 
-        # Obtengo el indice en el dataframe filtrado de la pelicula de interes
-        movie_index = similar_movies.loc[similar_movies['title'] == title].index 
-
         sim_movies = list(enumerate(similarity_matrix[movie_index[0]]))
         sim_movies = sorted(sim_movies, key=lambda x: x[1], reverse=True)
         top_similar_movies = [similar_movies.loc[i, 'title'] for i, _ in sim_movies[1:20] if similar_movies.loc[i, 'title'] != title][:5]
         data_json = {'similar_movies':top_similar_movies}
-        
+
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
 
+
+# --------------------------
+# Otra manera para el modelo:
+"""
+movie_genres = movies['genres'].loc[movies['title'] == title]
+
+# Separo los generos en una lista
+genres = [v.split(' ') for v in movie_genres if isinstance(v,str)]
+
+# Filtro el dataframe con las peliculas que tengan los mismos géneros que la pelicula de interes
+# y con las peliculas que tengan en su titulo el nombre de la pelicula de interes
+similar_movies = movies.loc[movies.genres.fillna(' ').str.contains(movie_genres.values[0]) | movies.title.str.contains(title)].reset_index(drop=True)
+
+# Vectorizo los datos
+data_matrix = vectorizer.fit_transform(similar_movies.joined_data)
+# Genero la matriz de puntuación de similitud entre las peliculas
+similarity_matrix = cosine_similarity(data_matrix,data_matrix)
+
+# Obtengo el indice en el dataframe filtrado de la pelicula de interes
+movie_index = similar_movies.loc[similar_movies['title'] == title].index 
+
+sim_movies = list(enumerate(similarity_matrix[movie_index[0]]))
+sim_movies = sorted(sim_movies, key=lambda x: x[1], reverse=True)
+top_similar_movies = [similar_movies.loc[i, 'title'] for i, _ in sim_movies[1:20] if similar_movies.loc[i, 'title'] != title][:5]
+data_json = {'similar_movies':top_similar_movies}
+"""
