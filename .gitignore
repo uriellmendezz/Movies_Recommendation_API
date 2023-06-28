@@ -1,6 +1,5 @@
 # Ignorar directorio venv
 venv/
-img/
 garbage/
 procesos.txt
 
