@@ -17,7 +17,7 @@ data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
 
 movies = data[['title','genres','director']]
-movies = movies.dropna(subset='genres') # Elimino las peliculas que tienen vacio el campo de 'genres'
+movies = movies.dropna(subset=['genres']) # Elimino las peliculas que tienen vacio el campo de 'genres'
 
 data.release_date = data.release_date.apply(lambda x: pd.to_datetime(x).date() if '-' in x else x)
 data['release_weekday']= data.release_date.apply(lambda x: x.strftime('%A') if type(x) == datetime.date else np.nan)
