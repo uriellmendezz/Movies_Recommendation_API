@@ -12,7 +12,7 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 ##### *(Te recomiendo abrir el link en otra pestaña e incluir zoom a la página para una mejor visualización)*
 
 
-## Índice
+## 📖 Índice
 
 - [Introducción](#introducción)
 - [Descripción de Archivos](#descripción-de-archivos)
@@ -27,7 +27,7 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 
 
 
-## Introducción
+## 👋 Introducción
 
 Este proyecto es un ejemplo de cómo se pueden combinar los campos de Data Engineering y Machine Learning para crear una API sencilla y potente. La implementación de esta API implica la realización de tareas de data engineering, como la extracción, transformación y carga (ETL) de datos, y también incorpora técnicas de Machine Learning para proporcionar funcionalidades como la recomendación de películas.
 
@@ -35,7 +35,7 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 
 
 
-## Descripción de Archivos
+## 🗂️ Descripción de Archivos
 <details>
 <summary><strong><em>notebooks</em></strong>: Tiene archivos Jupyter Notebooks</summary>
 
@@ -78,17 +78,17 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 
 
 
-## Procesos
+## ✅ Procesos
 
 El desarrollo de este proyecto involucró varios procesos clave:
 
-### Extracción, Transformación y Carga de Datos (ETL)
+### 🧹 Extracción, Transformación y Carga de Datos (ETL)
 
 El primer paso consistió en realizar el proceso de extracción, transformación y carga (ETL) de los datos de películas. Se recopilaron dos grandes archivos CSV, 'credits.csv' conteniendo información sobre el elenco y el equipo de produccion que participa en cada filmación y por otro lado 'movies_dataset.csv' con información mas precisa sobre cada pelicula, como por ejemplo a que coleccion y géneros pertenece cada filmación, la duración en minutos, datos financieros como el presupuesto, la ganancia y el retorno de inversion de cada una y muchas variables mas. 
 
 Cada archivo requirio de muchas transformaciones ya que contenian en sus valores algunos campos con diccionarios anidados, es decir, información comprimida. Gracias a la libreria de **Pandas**, lo que se hizo fue limpiar y organizar toda la información en varias columnas, <u> consiente de estar extendiendo los dataframes pero optimizando su utilidad a la hora de hacer consultas</u>. Luego del extenso proceso de limpieza y transformaciónes, se realizo una fusion (merge) entre ambos dataframes con las columnas de utilidad.
 
-### Creación de la API
+### 🛠️ Creación de la API
 
 
 Una vez obtenido el conjunto de datos de una manera mas efectiva y facil para realizar consultas, utilizando el framework de **FastAPI**, se creo la API en un archivo de Python (main.py) y finalmente fue desplegada en la plataforma de **Render** para que cualquier usuario en la red pueda acceder a ella.
@@ -120,7 +120,7 @@ Además de estas funciones, cabe recalcar que la API también cuenta con un **si
 
 <br>
 
-### Análisis Exploratorio de Datos (EDA)
+### 🕵️‍♀️ Análisis Exploratorio de Datos (EDA)
 
 Una vez con la información sumamente limpia y luego de la creación de la API, el proceso que le sigue es el EDA. Es crucial para entender como se comportan los datos que tengo en el dataset, para encontrar patrones y tenedecias y obtener información a traves de los graficos. En este análisis exploratorio, hice lo siguiente:
 
@@ -146,7 +146,7 @@ Exploré la columna "production_countries" para identificar los países de produ
 7. ***Correlación entre variables númericas*** <br>
 Gracias a una matriz de correlación pude notar cuales eran las variables que tenian una fuerte correlación como por ejemplo mientras mayor era el numero de votaciones que tenia la pelicula, mayor era la ganacia de la misma. Obviamente no puedo afirmar que la cantidad de votaciones es la cuasa directa de las grandes ganacias de una pelicula ya que hay que recordar que **una fuerte correlacion no implica causalidad**
 
-### Creación del Modelo de Machine Learning
+### 🧠 Creación del Modelo de Machine Learning
 Para el sistema de recomendación, primero desarrolle y probe el modelo de Machine Learning en un notebook y luego, una vez con todo listo, cree la función de recomendación dentro del archivo 'main.py' en el cual se iba a ejecutar la API.
 
 Empece este proceso seleccionando solamente las columnas de interes ya que debia intentar tener la menor cantidad de data y al mismo tiempo data de calidad para que la API al momento de procesarla no se caiga ni tenga algun problema de memoria. Ademas, tuve en cuenta que el deploy en Render solo ofrece una memoria RAM de 512 mb para el procesamiento de datos, lo cual es muy poco y limita las posibilidades. 
@@ -159,7 +159,7 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 
 
 
-## Uso de la API
+## 🎮 Uso de la API
 
 
 
@@ -322,7 +322,7 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 <br>
 
 
-## Requisitos
+## ⚠️ Requisitos
 Si deseas utilizar la API de manera local en tu computadora, deberas tener instalado en tu entorno virtual las siguientes herramientas:
 
 - pandas
@@ -341,7 +341,7 @@ pip install pandas numpy scikit-learn uvicorn fastapi
 
 
 
-## Contribuciones
+## 😉 Contribuciones
 
 Si te interesa agregar valor al proyecto, tu contribución será bienvenida de mi parte. Te sugiero que clones este repositorio en tu computadora para que puedas trabajar con el libremente de manera local.
 
@@ -352,6 +352,5 @@ Si te interesa agregar valor al proyecto, tu contribución será bienvenida de m
    ```
 
    Acordate de cambiar `tu-usuario` con tu nombre de usuario de GitHub. Una vez hayas clonado el repositorio, podes crear una rama nueva para tus cambios y comenzar a trabajar en ella.
-
 
 
