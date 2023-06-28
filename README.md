@@ -6,6 +6,8 @@ El objetivo de este proyecto es poder adquirir y consultar información de pelic
 
 Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados más acertados al encontrar películas que comparten características y temáticas similares a las requeridas por el usuario.
 
+## [→ Link de la API ←](https://movies-api-uriel-mendez.onrender.com)
+
 ---
 
 ## Índice
