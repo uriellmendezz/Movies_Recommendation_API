@@ -2,13 +2,15 @@
 
 ![Descripción de la imagen](img/banner.png)
 
+
 El objetivo de este proyecto es poder adquirir y consultar información de peliculas a traves de una API. Esta misma fue desarrollada gracias al framework de **FastAPI** y desplegada posteriormente en la plataforma de **Render**. Ademas, el proyecto cuenta con un sistema de recomendación de películas que utiliza un modelo de machine learning basado en el coseno de similitud. Este enfoque permite calcular la similitud entre los títulos, géneros y directores de las películas con el objetivo de proporcionar recomendaciones más precisas. Al calcular el coseno de similitud, el modelo evalúa a traves de lo que se conoce como la <u>*matriz de similitud*</u> la proximidad entre los diferentes elementos mensionados anteriormente y genera recomendaciones de películas similares a las que se solicitan.
 
 Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados más acertados al encontrar películas que comparten características y temáticas similares a las requeridas por el usuario.
 
-## [→ Link de la API ←](https://movies-api-uriel-mendez.onrender.com)
 
----
+[→ Link de la API ←](https://movies-api-uriel-mendez.onrender.com) 
+##### *(Te recomiendo abrir el link en otra pestaña e incluir zoom a la página para una mejor visualización)*
+
 
 ## Índice
 
@@ -23,7 +25,7 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 - [Uso de la API](#uso-de-la-api)
 - [Contribuciones](#contribuciones)
 
----
+
 
 ## Introducción
 
@@ -31,7 +33,7 @@ Este proyecto es un ejemplo de cómo se pueden combinar los campos de Data Engin
 
 Esta combinación crea una API que simula como los algoritmos de los servicios de streaming populares como Netflix, Disney+, Amazon Prime y muchos mas funcionan realmente, obviamente a una escala mucho menor computacionalmente pero que en definitiva busca realizar lo mismo, que es recomendar peliculas similares a los usuarios.
 
----
+
 
 ## Descripción de Archivos
 <details>
@@ -74,7 +76,7 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 
 <br>
 
----
+
 
 ## Procesos
 
@@ -155,7 +157,7 @@ Luego de esto, con la libreria de ***'scikit-learn'***, cree un objeto vectoriza
 
 Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vectorizer'** creado anteriormente y genera una matriz de similitud de puntuación entre las películas utilizando **'cosine_similarity'**. Gracias a esta matriz, pude obtener una lista con las cinco peliculas mas proximas (mas similares) a la puntuación de la pelicula requerida, siendo las primeras mas parecidas y las ultimas menos.
 
----
+
 
 ## Uso de la API
 
@@ -319,7 +321,7 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 
 <br>
 
----
+
 ## Requisitos
 Si deseas utilizar la API de manera local en tu computadora, deberas tener instalado en tu entorno virtual las siguientes herramientas:
 
@@ -337,7 +339,7 @@ pip install pandas numpy scikit-learn uvicorn fastapi
 
 <br>
 
----
+
 
 ## Contribuciones
 
