@@ -16,14 +16,14 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 
 - [Introducción](#introducción)
 - [Descripción de Archivos](#descripción-de-archivos)
-- [Procesos ✅](#procesos)
+- [Procesos](#procesos)
   - [Extracción, Transformación y Carga de Datos (ETL)](#extracción-transformación-y-carga-de-datos-etl)
   - [Creación de la API](#creación-de-la-api)
   - [Análisis Exploratorio de Datos (EDA)](#análisis-exploratorio-de-datos-eda)
   - [Creación del Modelo de Machine Learning](#creación-del-modelo-de-machine-learning)
-- [Requirimientos](#requisitos)
-- [Uso de la API](#uso-de-la-api)
-- [Contribuciones](#contribuciones)
+- [Uso de la API en la web](#uso-de-la-api-en-la-web)
+- [Uso en entorno local](#uso-en-entorno-local)
+
 
 
 
@@ -84,9 +84,7 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 
 ## Procesos
 
-✅ El desarrollo de este proyecto involucró varios procesos clave:
-
-
+El desarrollo de este proyecto involucró varios procesos clave:
 
 ### Extracción, Transformación y Carga de Datos (ETL)
 
@@ -147,13 +145,13 @@ Realicé un análisis de la extensión temporal de los datos en el conjunto, uti
 Utilicé la libreria *'wordcloud'* para crear una nube de palabras que representara las palabras clave en los títulos de las películas. Cuestion que al visualizarla, identifique las palabras más frecuentes en los titulos. Esto me permitio tener un primer acercamiento sobre los géneros y temas más comunes en las películas segun las palabras mas grandes del grafico. Conclui que en su mayoria, el dataset contenia peliculas de género romance/amor y tambien de drama.
 
 5. ***Analisis de géneros de películas*** <br>
-Luego de la nube de palabras, realicé un analisis de los géneros de películas presentes en el conjunto de datos. Conté la cantidad de películas por género y creé un gráfico de barras para visualizar los resultados. Identifiqué los géneros más frecuentes en el conjunto de datos y obtuvé conclusiones sobre la distribución de géneros. Ademas, con otro grafico de barras que muestra la valoracion promedio de cada género, pude notar cuales era los géneros cinematograficos mas aclamados por las personas.
+Luego de la nube de palabras, realicé un analisis de los géneros de películas presentes en el conjunto de datos. Conté la cantidad de películas por género y creé un gráfico de barras para visualizar los resultados. Identifiqué los géneros más frecuentes en el conjunto de datos y obtuvé conclusiones sobre la distribución de géneros. Ademas, con otro grafico de barras que muestra la valoracion promedio de cada género, pude notar cuales era los géneros cinematograficos mas aclamados por la audiencia.
 
 6. ***Analisis de países de producción*** <br>
 Exploré la columna "production_countries" para identificar los países de producción de las películas. Nuevamente cree un grafico de barras para ver la cantidad de películas producidas por país y obtuvé conclusiones sobre los países más frecuentes en la producción de películas.
 
 7. ***Correlación entre variables númericas*** <br>
-Gracias a una matriz de correlación pude notar cuales eran las variables que tenian una fuerte correlación como por ejemplo mientras mayor era el numero de votaciones que tenia la pelicula, mayor era la ganacia de la misma. Obviamente no puedo afirmar que la cantidad de votaciones es la cuasa directa de las grandes ganacias de una pelicula ya que hay que recordar que **una fuerte correlacion no implica causalidad**
+Gracias a una matriz de correlación pude notar cuales eran las variables que tenian una fuerte correlación como por ejemplo mientras mayor era el numero de votaciones que tenia la pelicula, mayor era la ganacia de la misma. Obviamente no puedo afirmar que la cantidad de votaciones es la causa directa de las grandes ganacias de una pelicula ya que hay que recordar que **una fuerte correlacion no implica causalidad**
 
 
 
@@ -172,7 +170,7 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 
 
 
-## Uso de la API
+## Uso de la API en la web
 
 
 ### **🎮 Para empezar a utilizar la API, te recomiendo que vayas a la siguiente pagina web con la documentación bien especifica:**
@@ -398,36 +396,47 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 <br>
 
 
-## Requirimientos
+## Uso en entorno local
 
-⚠️ Si deseas utilizar la API de manera local en tu computadora, deberas tener instalado en tu entorno virtual las siguientes herramientas:
+⚠️ Si deseas utilizar la API de manera local en tu computadora, deberas seguir los siguientes pasos:
 
-- pandas
-- numpy
-- scikit-learn
-- uvicorn
-- fastapi
+1. Clona este repositorio en tu máquina local (acodate de cambiar "*tu-usuario*" por el nombre de usuario de tu cuenta de GitHub)
+``` bash
+git clone https://github.com/tu-usuario/Movies_Recommendation_API.git
+```
 
-Te facilito el siguiente comando para que puedas descargar los paquetes usando `pip`:
+2. Crea un entorno virtual para el proyecto:
+``` bash
+python -m venv venv
+```
 
-```shell
-pip install pandas numpy scikit-learn uvicorn fastapi
+3. Activa el entorno virtual
+``` bash
+source venv/bin/activate  # Si tenes Linux o Mac
+```
+```bash
+venv\Scripts\activate  # Si tenes Windows
+```
+
+4. Instala las dependencias utilizando el archivo `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Ejecuta el archivo `main.py` en la terminal (recorda que deberas estar ubicado en la carpeta del proyecto)
+```bash
+python main.py
+```
+6. Por ultimo, activa el servidor de ASGI Uvicorn para ejecutar la API
+```bash
+uvicorn app.main:app --reload
 ```
 
 <br>
 
+---
 
-
-## Contribuciones
-
-😉 Si te interesa agregar valor al proyecto, tu contribución será bienvenida de mi parte. Te sugiero que clones este repositorio en tu computadora para que puedas trabajar con el libremente de manera local.
-
-   Para clonarlo, ejecuta el siguiente comando en tu terminal:
-   
-   ```
-   git clone https://github.com/tu-usuario/Movies_Recommendation_API.git
-   ```
-
-   Acordate de cambiar `tu-usuario` con tu nombre de usuario de GitHub. Una vez hayas clonado el repositorio, podes crear una rama nueva para tus cambios y comenzar a trabajar en ella.
+##### Hecho por Uriel Mendez 
 
 

@@ -16,7 +16,7 @@ dias_en = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "
 data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
 
-movies = data[['title','genres','director','popularity']]
+movies = data[['title','genres','director','popularity']] # Agrego popularity para poder ordenar las peliculas por popularidad
 movies = movies.dropna(subset=['genres']) # Elimino las peliculas que tienen vacio el campo de 'genres'
 
 data.release_date = data.release_date.apply(lambda x: pd.to_datetime(x).date() if '-' in x else x)
@@ -196,10 +196,13 @@ def recomendacion(title):
 
         # Filtro el dataframe con las peliculas que tengan los mismos géneros que la pelicula de interes
         # y con las peliculas que tengan en su titulo el nombre de la pelicula de interes
-        similar_movies = movies.loc[(movies.genres.fillna(' ').str.contains(movie_genres[0])) | (movies.title.str.contains(title))].reset_index(drop=True)
-        max_len = 3850 # Limito la cantidad de filas que puede llegar a tener el df de similar_movies para no ocupar mucha memoria
-        if len(similar_movies) > max_len:
-            similar_movies = similar_movies.sort_values(by='popularity', ascending=False).reset_index(drop=True)[:max_len]
+        max_len = 2500 # Limito la cantidad de filas que puede llegar a tener el df de similar_movies para no ocupar mucha memoria
+        similar_movies = movies.loc[(movies.genres.fillna(' ').str.contains(movie_genres[0])) | (movies.title.str.contains(title))].reset_index(drop=True).sort_values(by='popularity', ascending=False)[:max_len]
+        
+        if title not in similar_movies.title:
+            new_row = movies.loc[movies.title == title]
+            similar_movies = pd.concat([similar_movies, new_row], ignore_index=True)
+            movie_index = similar_movies.loc[similar_movies['title'] == title].index
 
         # Obtengo el indice en el dataframe filtrado de la pelicula de interes
         movie_index = similar_movies.loc[similar_movies['title'] == title].index
