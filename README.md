@@ -1,6 +1,6 @@
-# Proyecto API Recomendación de Películas
+# Proyecto API Recomendaciónes de Películas
 
-![Descripción de la imagen](img/banner.png)
+![Descripción de la imagen](img/cover.png)
 
 
 El objetivo de este proyecto es poder adquirir y consultar información de peliculas a traves de una API. Esta misma fue desarrollada gracias al framework de **FastAPI** y desplegada posteriormente en la plataforma de **Render**. Ademas, el proyecto cuenta con un sistema de recomendación de películas que utiliza un modelo de machine learning basado en el coseno de similitud. Este enfoque permite calcular la similitud entre los títulos, géneros y directores de las películas con el objetivo de proporcionar recomendaciones más precisas. Al calcular el coseno de similitud, el modelo evalúa a traves de lo que se conoce como la <u>*matriz de similitud*</u> la proximidad entre los diferentes elementos mensionados anteriormente y genera recomendaciones de películas similares a las que se solicitan.
@@ -16,28 +16,31 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 
 - [Introducción](#introducción)
 - [Descripción de Archivos](#descripción-de-archivos)
-- [Procesos](#procesos)
+- [Procesos ✅](#procesos)
   - [Extracción, Transformación y Carga de Datos (ETL)](#extracción-transformación-y-carga-de-datos-etl)
   - [Creación de la API](#creación-de-la-api)
   - [Análisis Exploratorio de Datos (EDA)](#análisis-exploratorio-de-datos-eda)
   - [Creación del Modelo de Machine Learning](#creación-del-modelo-de-machine-learning)
-- [Requisitos](#requisitos)
+- [Requirimientos](#requisitos)
 - [Uso de la API](#uso-de-la-api)
 - [Contribuciones](#contribuciones)
 
 
 
-## 👋 Introducción
+## Introducción
 
-Este proyecto es un ejemplo de cómo se pueden combinar los campos de Data Engineering y Machine Learning para crear una API sencilla y potente. La implementación de esta API implica la realización de tareas de data engineering, como la extracción, transformación y carga (ETL) de datos, y también incorpora técnicas de Machine Learning para proporcionar funcionalidades como la recomendación de películas.
+<span style="font-size: 20px;">👋</span> Este proyecto es un ejemplo de cómo se pueden combinar los campos de Data Engineering y Machine Learning para crear una API sencilla y potente. La implementación de esta API implica la realización de tareas de data engineering, como la extracción, transformación y carga (ETL) de datos, y también incorpora técnicas de Machine Learning para proporcionar funcionalidades como la recomendación de películas.
 
 Esta combinación crea una API que simula como los algoritmos de los servicios de streaming populares como Netflix, Disney+, Amazon Prime y muchos mas funcionan realmente, obviamente a una escala mucho menor computacionalmente pero que en definitiva busca realizar lo mismo, que es recomendar peliculas similares a los usuarios.
 
 
 
-## 🗂️ Descripción de Archivos
+
+## Descripción de Archivos
+
+
 <details>
-<summary><strong><em>notebooks</em></strong>: Tiene archivos Jupyter Notebooks</summary>
+<summary><strong>🗂️<em> notebooks</em></strong>: Tiene archivos Jupyter Notebooks</summary>
 
 - *`ETL_process`*: Carpeta que contiene archivos *.ipynb* del proceso de ETL
 - *`EDA_process`*: Carpeta que contiene un archivo *.ipynb* del proceso de EDA
@@ -45,9 +48,9 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 </details>
 
 <details>
-<summary><strong><em>final_data</em></strong>: Tiene archivos CSV</summary>
+<summary><strong>🗂️<em> final_data</em></strong>: Tiene archivos CSV</summary>
 
-- *`actors_data.csv`*: Archivo *.csv* con datos de cada pelicula
+- *`actors_data.csv`*: Archivo *.csv* con los actores de cada pelicula
 - *`combined_data.csv`*: Archivo *.csv* fusionado
 - *`final_cast.csv`*: Archivo *.csv* con datos de cada personaje de cada pelicula
 - *`final_crew.csv`*: Archivo *.csv* con datos de el equipo de producción de cada pelicula
@@ -55,43 +58,47 @@ Esta combinación crea una API que simula como los algoritmos de los servicios d
 </details>
 
 <details>
-<summary><strong><em>original_datasets</em></strong>: Tiene archivos CSV</summary>
+<summary><strong>🗂️<em> original_datasets</em></strong>: Tiene archivos CSV</summary>
 
 - *`credits.csv`*: Archivo *.csv* con los datos originales/crudos sobre los creditos
 - *`movies_dataset.csv`*: Archivo *.csv* con los datos originales sobre las peliculas
 </details>
 
 <details>
-<summary><strong><em>preprocessing_data</em></strong>: Tiene archivos CSV</summary>
+<summary><strong>🗂️<em> preprocessing_data</em></strong>: Tiene archivos CSV</summary>
 
 - *`cast.zip`*: Archivo comprimido *.zip* con datos en diccionarios anidados sobre el elenco de cada pelicula
 - *`crew.csv`*: Archivo *.csv* con datos en diccionarios anidados sobre el equipo de producción de cada pelicula
 </details>
 
-<summary><strong><em>main.py</em></strong>: Archivo <em>.py</em> con las funciónes de la API</summary>
+<summary><strong>🐍<em> main.py</em></strong>: Archivo <em>.py</em> con las funciónes de la API</summary>
 
-<summary><strong><em>README.md</em></strong>: Archivo <em>.md</em> con la documentación del proyecto</summary>
+<summary><strong>📗<em> README.md</em></strong>: Archivo <em>.md</em> con la documentación del proyecto</summary>
 
-<summary><strong><em>requirements.txt</em></strong>: Archivo <em>.txt</em> con las dependencias requeridas para el proyecto</summary>
+<summary><strong>⚠️<em> requirements.txt</em></strong>: Archivo <em>.txt</em> con las dependencias requeridas para el proyecto</summary>
 
 <br>
 
 
 
-## ✅ Procesos
 
-El desarrollo de este proyecto involucró varios procesos clave:
+## Procesos
 
-### 🧹 Extracción, Transformación y Carga de Datos (ETL)
+✅ El desarrollo de este proyecto involucró varios procesos clave:
 
-El primer paso consistió en realizar el proceso de extracción, transformación y carga (ETL) de los datos de películas. Se recopilaron dos grandes archivos CSV, 'credits.csv' conteniendo información sobre el elenco y el equipo de produccion que participa en cada filmación y por otro lado 'movies_dataset.csv' con información mas precisa sobre cada pelicula, como por ejemplo a que coleccion y géneros pertenece cada filmación, la duración en minutos, datos financieros como el presupuesto, la ganancia y el retorno de inversion de cada una y muchas variables mas. 
+
+
+### Extracción, Transformación y Carga de Datos (ETL)
+
+🧹 El primer paso consistió en realizar el proceso de extracción, transformación y carga (ETL) de los datos de películas. Se recopilaron dos grandes archivos CSV, 'credits.csv' conteniendo información sobre el elenco y el equipo de produccion que participa en cada filmación y por otro lado 'movies_dataset.csv' con información mas precisa sobre cada pelicula, como por ejemplo a que coleccion y géneros pertenece cada filmación, la duración en minutos, datos financieros como el presupuesto, la ganancia y el retorno de inversion de cada una y muchas variables mas. 
 
 Cada archivo requirio de muchas transformaciones ya que contenian en sus valores algunos campos con diccionarios anidados, es decir, información comprimida. Gracias a la libreria de **Pandas**, lo que se hizo fue limpiar y organizar toda la información en varias columnas, <u> consiente de estar extendiendo los dataframes pero optimizando su utilidad a la hora de hacer consultas</u>. Luego del extenso proceso de limpieza y transformaciónes, se realizo una fusion (merge) entre ambos dataframes con las columnas de utilidad.
 
-### 🛠️ Creación de la API
 
 
-Una vez obtenido el conjunto de datos de una manera mas efectiva y facil para realizar consultas, utilizando el framework de **FastAPI**, se creo la API en un archivo de Python (main.py) y finalmente fue desplegada en la plataforma de **Render** para que cualquier usuario en la red pueda acceder a ella.
+### Creación de la API
+
+🛠️ Una vez obtenido el conjunto de datos de una manera mas efectiva y facil para realizar consultas, utilizando el framework de **FastAPI**, se creo la API en un archivo de Python (main.py) y finalmente fue desplegada en la plataforma de **Render** para que cualquier usuario en la red pueda acceder a ella.
 
 <img src="img/fastapi_logo.png" alt="Descripción de la imagen" width="250" height="100">
 
@@ -120,9 +127,11 @@ Además de estas funciones, cabe recalcar que la API también cuenta con un **si
 
 <br>
 
-### 🕵️‍♀️ Análisis Exploratorio de Datos (EDA)
 
-Una vez con la información sumamente limpia y luego de la creación de la API, el proceso que le sigue es el EDA. Es crucial para entender como se comportan los datos que tengo en el dataset, para encontrar patrones y tenedecias y obtener información a traves de los graficos. En este análisis exploratorio, hice lo siguiente:
+
+### Análisis Exploratorio de Datos (EDA)
+
+🕵️‍♀️ Una vez con la información sumamente limpia y luego de la creación de la API, el proceso que le sigue es el EDA. Es crucial para entender como se comportan los datos que tengo en el dataset, para encontrar patrones y tenedecias y obtener información a traves de los graficos. En este análisis exploratorio, hice lo siguiente:
 
 
 1. ***Información basica del dataset*** <br>
@@ -146,8 +155,11 @@ Exploré la columna "production_countries" para identificar los países de produ
 7. ***Correlación entre variables númericas*** <br>
 Gracias a una matriz de correlación pude notar cuales eran las variables que tenian una fuerte correlación como por ejemplo mientras mayor era el numero de votaciones que tenia la pelicula, mayor era la ganacia de la misma. Obviamente no puedo afirmar que la cantidad de votaciones es la cuasa directa de las grandes ganacias de una pelicula ya que hay que recordar que **una fuerte correlacion no implica causalidad**
 
-### 🧠 Creación del Modelo de Machine Learning
-Para el sistema de recomendación, primero desarrolle y probe el modelo de Machine Learning en un notebook y luego, una vez con todo listo, cree la función de recomendación dentro del archivo 'main.py' en el cual se iba a ejecutar la API.
+
+
+### Creación del Modelo de Machine Learning
+
+🧠 Para el sistema de recomendación, primero desarrolle y probe el modelo de Machine Learning en un notebook y luego, una vez con todo listo, cree la función de recomendación dentro del archivo 'main.py' en el cual se iba a ejecutar la API.
 
 Empece este proceso seleccionando solamente las columnas de interes ya que debia intentar tener la menor cantidad de data y al mismo tiempo data de calidad para que la API al momento de procesarla no se caiga ni tenga algun problema de memoria. Ademas, tuve en cuenta que el deploy en Render solo ofrece una memoria RAM de 512 mb para el procesamiento de datos, lo cual es muy poco y limita las posibilidades. 
 
@@ -159,11 +171,11 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 
 
 
-## 🎮 Uso de la API
+
+## Uso de la API
 
 
-
-### **Para empezar a utilizar la API, te recomiendo que vayas a la siguiente pagina web con la documentación bien especifica:**
+### **🎮 Para empezar a utilizar la API, te recomiendo que vayas a la siguiente pagina web con la documentación bien especifica:**
 **https://movies-api-uriel-mendez.onrender.com/docs**
 
 <br>
@@ -187,12 +199,12 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 - Ruta: ***`/cantidad_filmaciones_mes/{mes}`***
 - Descripción: Devuelve la cantidad de películas que se estrenaron históricamente en un mes específico.
 - Parámetros de entrada: *mes* (str) - El mes en idioma español.
-- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/cantidad_filmaciones_mes/enero
+- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/cantidad_filmaciones_mes/noVIEmbre
 
   ```json
   {
-    "mes": "enero",
-    "cantidad_fimaciones_mes": 150
+    "mes": "Noviembre",
+    "cantidad_fimaciones_mes": 4620.0
   }
   ```
 
@@ -202,12 +214,12 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 - Ruta: ***`/cantidad_filmaciones_dia/{dia}`***
 - Descripción: Devuelve la cantidad de películas que se estrenaron históricamente en un día específico de la semana.
 - Parámetros de entrada: *dia* (str) - El día de la semana en idioma español.
-- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/cantidad_filmaciones_dia/lunes
+- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/cantidad_filmaciones_dia/sabado
 
   ```json
   {
-    "dia": "lunes",
-    "cantidad_filmaciones_dia": 50
+    "dia": "Sabado",
+    "cantidad_filmaciones_dia": 5144
   }
   ```
 
@@ -218,13 +230,13 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 - Ruta: ***`/score_titulo/{titulo}`***
 - Descripción: Devuelve el título, año de estreno y puntaje de una película específica.
 - Parámetros de entrada: *titulo* (str) - El título de la película.
-- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/score_titulo/Cars
+- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/score_titulo/Avatar
 
   ```json
   {
-    "titulo": "Cars",
-    "anio": 1996,
-    "popularity": 12.345678
+    "titulo": "Avatar",
+    "anio": 2009,
+    "popularidad": 185.070892
   }
   ```
 <br>
@@ -241,7 +253,8 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
     "titulo": "Minions",
     "anio": 2008,
     "votos": 4729,
-    "valoracion_promedio": 6.6
+    "valoracion_promedio": 6.4,
+    "mensaje": null
   }
   ```
 <br>
@@ -273,27 +286,90 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
   {
     "director": "James Cameron",
     "retorno_total_director": 54.23441585285313,
-    "peliculas": [
+    "peliculas_dirigidas": [
         {
-            "title": "True Lies",
-            "release_year": "1994",
-            "return": 3.2946296608695653,
-            "budget": 115000000.0,
-            "revenue": 378882411.0
+            "titulo": "True Lies",
+            "anio_estreno": "1994",
+            "retorno_inversion": 3.2946296608695653,
+            "presupuesto": 115000000.0,
+            "ganancias": 378882411.0
         },
         {
-            "title": "Terminator 2: Judgment Day",
-            "release_year": "1991",
-            "return": 5.2,
-            "budget": 100000000.0,
-            "revenue": 520000000.0
+            "titulo": "Terminator 2: Judgment Day",
+            "anio_estreno": "1991",
+            "retorno_inversion": 5.2,
+            "presupuesto": 100000000.0,
+            "ganancias": 520000000.0
         },
         {
-            "title": "The Abyss",
-            "release_year": "1981",
-            "return": 1.2857156857142855,
-            "budget": 70000000.0,
-            "revenue": 90000098.0
+            "titulo": "The Abyss",
+            "anio_estreno": "1981",
+            "retorno_inversion": 1.2857156857142855,
+            "presupuesto": 70000000.0,
+            "ganancias": 90000098.0
+        },
+        {
+            "titulo": "Aliens",
+            "anio_estreno": "1987",
+            "retorno_inversion": 9.908997567567567,
+            "presupuesto": 18500000.0,
+            "ganancias": 183316455.0
+        },
+        {
+            "titulo": "The Terminator",
+            "anio_estreno": "1989",
+            "retorno_inversion": 12.2455,
+            "presupuesto": 6400000.0,
+            "ganancias": 78371200.0
+        },
+        {
+            "titulo": "Titanic",
+            "anio_estreno": "1996",
+            "retorno_inversion": 9.22517094,
+            "presupuesto": 200000000.0,
+            "ganancias": 1845034188.0
+        },
+        {
+            "titulo": "Piranha Part Two: The Spawning",
+            "anio_estreno": "2002",
+            "retorno_inversion": 0.0,
+            "presupuesto": 145786.0,
+            "ganancias": 0.0
+        },
+        {
+            "titulo": "Ghosts of the Abyss",
+            "anio_estreno": "2003",
+            "retorno_inversion": 1.3108362307692307,
+            "presupuesto": 13000000.0,
+            "ganancias": 17040871.0
+        },
+        {
+            "titulo": "Aliens of the Deep",
+            "anio_estreno": "2004",
+            "retorno_inversion": 0.0,
+            "presupuesto": 0.0,
+            "ganancias": 0.0
+        },
+        {
+            "titulo": "Avatar",
+            "anio_estreno": "2009",
+            "retorno_inversion": 11.763565767932487,
+            "presupuesto": 237000000.0,
+            "ganancias": 2787965087.0
+        },
+        {
+            "titulo": "Avatar 2",
+            "anio_estreno": "2006",
+            "retorno_inversion": 0.0,
+            "presupuesto": 0.0,
+            "ganancias": 0.0
+        },
+        {
+            "titulo": "T2 3-D: Battle Across Time",
+            "anio_estreno": "2015",
+            "retorno_inversion": 0.0,
+            "presupuesto": 0.0,
+            "ganancias": 0.0
         }
     ]
   }
@@ -305,16 +381,16 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 - Ruta: ***`/recomendacion/{title}`***
 - Descripción: Obtiene recomendaciones de películas similares a una película dada.
 - Parámetros de entrada: *title* (str) - El título de la película.
-- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/recomendacion/Titanic
+- Ejemplo de solicitud: https://movies-api-uriel-mendez.onrender.com/recomendacion/Iron%20Man
 
   ```json
   {
-    "similar_movies": [
-        "Titanic: The Final Word with James Cameron",
-        "Fear",
-        "When Will I Be Loved",
-        "Titanic Town",
-        "Raise the Titanic"
+    "peliculas_similares": [
+        "Iron Man 2",
+        "Iron Man 3",
+        "The Invincible Iron Man",
+        "The Core",
+        "Tetsuo: The Iron Man"
     ]
   }
   ```
@@ -322,8 +398,9 @@ Ahora si, cree la función que vectoriza los datos utilizando el objeto **'vecto
 <br>
 
 
-## ⚠️ Requisitos
-Si deseas utilizar la API de manera local en tu computadora, deberas tener instalado en tu entorno virtual las siguientes herramientas:
+## Requirimientos
+
+⚠️ Si deseas utilizar la API de manera local en tu computadora, deberas tener instalado en tu entorno virtual las siguientes herramientas:
 
 - pandas
 - numpy
@@ -341,9 +418,9 @@ pip install pandas numpy scikit-learn uvicorn fastapi
 
 
 
-## 😉 Contribuciones
+## Contribuciones
 
-Si te interesa agregar valor al proyecto, tu contribución será bienvenida de mi parte. Te sugiero que clones este repositorio en tu computadora para que puedas trabajar con el libremente de manera local.
+😉 Si te interesa agregar valor al proyecto, tu contribución será bienvenida de mi parte. Te sugiero que clones este repositorio en tu computadora para que puedas trabajar con el libremente de manera local.
 
    Para clonarlo, ejecuta el siguiente comando en tu terminal:
    

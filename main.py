@@ -16,7 +16,7 @@ dias_en = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "
 data = pd.read_csv('final_data/combined_data.csv',sep=',')
 cast = pd.read_csv('final_data/final_cast.csv')
 
-movies = data[['title','genres','director']]
+movies = data[['title','genres','director','popularity']]
 movies = movies.dropna(subset=['genres']) # Elimino las peliculas que tienen vacio el campo de 'genres'
 
 data.release_date = data.release_date.apply(lambda x: pd.to_datetime(x).date() if '-' in x else x)
@@ -35,7 +35,7 @@ def cantidad_filmaciones_mes(mes:str):
     else:
         mes_numero = meses.index(mes)
         cantidad_xmes = float(data['movie_id'].loc[data.release_month == mes_numero].count())
-        data_json = {'mes':mes,'cantidad_fimaciones_mes':cantidad_xmes}
+        data_json = {'mes':mes.capitalize(),'cantidad_fimaciones_mes':cantidad_xmes}
 
         json_str = json.dumps(data_json, indent=4, default=str)
         return Response(content=json_str, media_type='application/json')
@@ -79,7 +79,7 @@ def score_titulo(titulo:str):
 
         data_json = {'titulo':titulo,
                     'anio':movie_year,
-                    'popularity':movie_score}
+                    'popularidad':movie_score}
 
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
@@ -153,16 +153,16 @@ def get_director(nombre_director:str):
             movie_budget = data.budget.iloc[index]
             movie_revenue = data.revenue.iloc[index]
 
-            info = {'title':movie_title,
-                    'release_year':movie_release_year,
-                    'return':movie_return,
-                    'budget':movie_budget,
-                    'revenue':movie_revenue}
+            info = {'titulo':movie_title,
+                    'anio_estreno':movie_release_year,
+                    'retorno_inversion':movie_return,
+                    'presupuesto':movie_budget,
+                    'ganancias':movie_revenue}
             movies_data.append(info)
             
         data_json = {'director':nombre_director,
                 'retorno_total_director':retorno_total_director,
-                'peliculas':movies_data}
+                'peliculas_dirigidas':movies_data}
     
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
@@ -197,14 +197,15 @@ def recomendacion(title):
         # Filtro el dataframe con las peliculas que tengan los mismos géneros que la pelicula de interes
         # y con las peliculas que tengan en su titulo el nombre de la pelicula de interes
         similar_movies = movies.loc[(movies.genres.fillna(' ').str.contains(movie_genres[0])) | (movies.title.str.contains(title))].reset_index(drop=True)
-        max_len = 3500
+        max_len = 3850 # Limito la cantidad de filas que puede llegar a tener el df de similar_movies para no ocupar mucha memoria
         if len(similar_movies) > max_len:
             similar_movies = similar_movies.sort_values(by='popularity', ascending=False).reset_index(drop=True)[:max_len]
 
         # Obtengo el indice en el dataframe filtrado de la pelicula de interes
         movie_index = similar_movies.loc[similar_movies['title'] == title].index
         if len(movie_index) == 0:
-            similar_movies = similar_movies.append(movies.loc[movies.title == title]).reset_index(drop=True)
+            new_row = movies.loc[movies.title == title]
+            similar_movies = pd.concat([similar_movies, new_row], ignore_index=True)
             movie_index = similar_movies.loc[similar_movies['title'] == title].index
 
         # Vectorizo los datos
@@ -215,7 +216,7 @@ def recomendacion(title):
         sim_movies = list(enumerate(similarity_matrix[movie_index[0]]))
         sim_movies = sorted(sim_movies, key=lambda x: x[1], reverse=True)
         top_similar_movies = [similar_movies.loc[i, 'title'] for i, _ in sim_movies[1:20] if similar_movies.loc[i, 'title'] != title][:5]
-        data_json = {'similar_movies':top_similar_movies}
+        data_json = {'peliculas_similares':top_similar_movies}
 
     json_str = json.dumps(data_json, indent=4, default=str)
     return Response(content=json_str, media_type='application/json')
