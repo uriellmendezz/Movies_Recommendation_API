@@ -1,6 +1,6 @@
 # Proyecto API Recomendaciónes de Películas
 
-![Descripción de la imagen](img/cover.png)
+![Foto de portada](img/banner_github.png)
 
 
 El objetivo de este proyecto es poder adquirir y consultar información de peliculas a traves de una API. Esta misma fue desarrollada gracias al framework de **FastAPI** y desplegada posteriormente en la plataforma de **Render**. Ademas, el proyecto cuenta con un sistema de recomendación de películas que utiliza un modelo de machine learning basado en el coseno de similitud. Este enfoque permite calcular la similitud entre los títulos, géneros y directores de las películas con el objetivo de proporcionar recomendaciones más precisas. Al calcular el coseno de similitud, el modelo evalúa a traves de lo que se conoce como la <u>*matriz de similitud*</u> la proximidad entre los diferentes elementos mensionados anteriormente y genera recomendaciones de películas similares a las que se solicitan.
@@ -30,6 +30,9 @@ Gracias a esta técnica, el sistema de recomendación puede ofrecer resultados m
 ## Introducción
 
 <span style="font-size: 20px;">👋</span> Este proyecto es un ejemplo de cómo se pueden combinar los campos de Data Engineering y Machine Learning para crear una API sencilla y potente. La implementación de esta API implica la realización de tareas de data engineering, como la extracción, transformación y carga (ETL) de datos, y también incorpora técnicas de Machine Learning para proporcionar funcionalidades como la recomendación de películas.
+
+<img src="img/MLOps.png" alt="Machine Learning Operations" width="250" height="230">
+
 
 Esta combinación crea una API que simula como los algoritmos de los servicios de streaming populares como Netflix, Disney+, Amazon Prime y muchos mas funcionan realmente, obviamente a una escala mucho menor computacionalmente pero que en definitiva busca realizar lo mismo, que es recomendar peliculas similares a los usuarios.
 
